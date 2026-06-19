@@ -4,6 +4,8 @@ import { CartPage } from '../pages/CartPage'
 import { InventoryPage } from '../pages/InventoryPage'
 import { CheckoutPage } from '../pages/CheckoutPage'
 import { faker } from '@faker-js/faker'
+import 'cypress-plugin-steps'
+
 
 
 describe('Checkout', () => {
@@ -101,20 +103,33 @@ describe('Checkout', () => {
         cy.url().should('include', 'checkout-complete.html')
     });
 
-    it('Should shown Confirmation Message', () => {
-              const inventoryPage = new InventoryPage()
+    it('Should show confirmation message after completing the order', () => {
+        const inventoryPage = new InventoryPage()
+        cy.step('Add product to the cart')
         inventoryPage.addToCartSauceLabsBackpack()
+        cy.step('Go to the cart')
+
         inventoryPage.clickCartIcon()
         const cartPage = new CartPage()
+        cy.step('Start checkout')
+
         cartPage.clickCheckoutButton()
         const checkoutPage = new CheckoutPage()
+        cy.step('Fill in customer information')
+
         checkoutPage.fillInformation(
             faker.person.firstName(),
             faker.person.lastName(),
             faker.location.zipCode()
         )
+
+        cy.step('Continue to the overview')
         checkoutPage.clickContinueButton()
+
+        cy.step('Finish the order')
         checkoutPage.clickFinishButton()
+        cy.step('Verify the confirmation message')
+
         checkoutPage.getSuccessMessage().should('have.text', 'Thank you for your order!')
     });
 

@@ -13,6 +13,7 @@
   "devDependencies": {
     "@faker-js/faker": "^10.4.0",
     "cypress": "^15.17.0",
+    "cypress-plugin-steps": "^1.2.1",
     "typescript": "^6.0.3"
   },
   "allowScripts": {
